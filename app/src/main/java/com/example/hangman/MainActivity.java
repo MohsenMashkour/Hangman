@@ -26,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
     TextView txtWord;
     EditText edtLetter;
     String guessText;
-    char guess_char;
+    String guess_char;
+    char xxx;
+
 
     int ids[] = {
             R.drawable.hangman_gray,
@@ -79,11 +81,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
 
-                        int number = (int) (words.length * Math.random());
-                        mystery_word = words[number];
 
 
-                        txtWord.setText(mystery_word);
+                        init();
+
+
+
                         Counter =0;
                         imgView();
                         edtLetter.setText("");
@@ -94,6 +97,42 @@ public class MainActivity extends AppCompatActivity {
                 make.show();
             }
         });
+    }
+
+    private void init() {
+        int number = (int) (words.length * Math.random());
+        mystery_word = words[number];
+
+        int tul = mystery_word.length();
+        switch (tul) {
+            case 2:
+                txtWord.setText("**");
+                break;
+            case 3:
+                txtWord.setText("***");
+                break;
+            case 4:
+                txtWord.setText("****");
+                break;
+            case 5:
+                txtWord.setText("*****");
+                break;
+            case 6:
+                txtWord.setText("******");
+                break;
+            case 7:
+                txtWord.setText("*******");
+                break;
+            case 8:
+                txtWord.setText("********");
+                break;
+            case 9:
+                txtWord.setText("*********");
+                break;
+            case 10:
+                txtWord.setText("**********");
+                break;
+        }
     }
 
     @Override
@@ -120,90 +159,129 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkWord(View view) {
         int id = view.getId();
-        if (id == R.id.btnWord){
+        if (id == R.id.btnWord) {
 
-           imgView();
-
-
-
-        guessText = edtLetter.getText().toString();
-
-        try {
+            imgView();
 
 
-            if (guessText.isEmpty()) {
+            guessText = edtLetter.getText().toString();
+
+            try {
+
+
+                if (guessText.isEmpty()) {
+                    //Toast.makeText(this, "write", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(view, "Guess something and write it", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                    //snackbar.setAction()
+
+
+                } else if (mystery_word.equals(guessText)) {
+                    txtWord.setText(mystery_word);
+                    Snackbar s = Snackbar.make(view, "You win. Do you want a new game?", Snackbar.LENGTH_LONG);
+                    s.setAction("YES", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+
+                            init();
+                            edtLetter.setText("");
+
+                        }
+                    });
+                    s.show();
+                    Counter = 0;
+                    imgView();
+
+
+                } else {
+                    Counter++;
+                    imgView();
+                    Snackbar snak = Snackbar.make(view, "Take care your answer was wrong!!!!!", Snackbar.LENGTH_SHORT);
+                    snak.show();
+
+                }
+            } finally {
+                if (Counter == 11) {
+                    txtWord.setText(mystery_word);
+                    Snackbar snk = Snackbar.make(view, "Sorry you lost the game. do you want a new game?", Snackbar.LENGTH_INDEFINITE);
+                    snk.setAction("YES", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            init();
+                            edtLetter.setText("");
+                            Counter = 0;
+                            imgView();
+                        }
+                    });
+                    snk.show();
+
+
+                }
+            }
+
+
+            // int index = mystery_word.indexOf(guess_char, 0);// search from index 0)
+            //   StringBuilder tmp = new StringBuilder(guess_word);
+            //   tmp.setCharAt(index, guess_char);
+            //     Toast.makeText(this, guess_char, Toast.LENGTH_SHORT).show();
+            //   Snackbar.make(view,index,Snackbar.LENGTH_SHORT);
+            // txtWord.setText(guess_char);
+        }
+
+        if (id == R.id.btnLetter) {
+            guess_char = edtLetter.getText().toString();
+            guessText = txtWord.getText().toString();
+
+            try {
+
+            if (guess_char.isEmpty()) {
                 //Toast.makeText(this, "write", Toast.LENGTH_SHORT).show();
                 Snackbar snackbar = Snackbar.make(view, "Guess something and write it", Snackbar.LENGTH_SHORT);
                 snackbar.show();
                 //snackbar.setAction()
 
 
-            } else if (mystery_word.equals(guessText)) {
-                Snackbar s = Snackbar.make(view, "You win. Do you want a new game?", Snackbar.LENGTH_LONG);
-                s.setAction("YES", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            }else if (mystery_word.contains(guess_char)) {
+                    // int indx;
 
+                    int indx = mystery_word.indexOf(guess_char);
+                    xxx = guess_char.charAt(0);
+                    StringBuilder tmp = new StringBuilder(guessText);
 
-                        int number = (int) (words.length * Math.random());
-                        mystery_word = words[number];
-
-
-                        txtWord.setText(mystery_word);
-                        edtLetter.setText("");
-
-                    }
-                });
-                s.show();
-                Counter = 0;
-                imgView();
-
-
-            } else {
-                Counter++;
-                imgView();
-                Snackbar snak = Snackbar.make(view, "Take care your answer was wrong!!!!!", Snackbar.LENGTH_SHORT);
-                snak.show();
-
-            }
-        }finally {if (Counter == 11){
-                Snackbar snk = Snackbar.make(view,"Sorry you lost the game. do you want a new game?",Snackbar.LENGTH_INDEFINITE);
-            snk.setAction("YES", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                    int number = (int) (words.length * Math.random());
-                    mystery_word = words[number];
-
-
-                    txtWord.setText(mystery_word);
+                    tmp.setCharAt(indx, xxx);
+                    txtWord.setText(tmp);
                     edtLetter.setText("");
-                    Counter = 0;
+                    Snackbar snak = Snackbar.make(view, "Great guess. Go ahead!!!!!", Snackbar.LENGTH_SHORT);
+                    snak.show();
+
+
+                    // Toast.makeText(this, tmp, Toast.LENGTH_SHORT).show();
+                } else {
+                    Snackbar snak = Snackbar.make(view, "Take care your answer was wrong!!!!!", Snackbar.LENGTH_SHORT);
+                    snak.show();
+                    //Toast.makeText(this, "nokey", Toast.LENGTH_SHORT).show();
+                    edtLetter.setText("");
+                    Counter++;
                     imgView();
                 }
-            });
-            snk.show();
+            } finally {
+                if (Counter == 11) {
+                    txtWord.setText(mystery_word);
+                    Snackbar snk = Snackbar.make(view, "Sorry you lost the game. do you want a new game?", Snackbar.LENGTH_INDEFINITE);
+                    snk.setAction("YES", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-
-            }
-        }
-
-
-       // int index = mystery_word.indexOf(guess_char, 0);// search from index 0)
-     //   StringBuilder tmp = new StringBuilder(guess_word);
-     //   tmp.setCharAt(index, guess_char);
-       //     Toast.makeText(this, guess_char, Toast.LENGTH_SHORT).show();
-         //   Snackbar.make(view,index,Snackbar.LENGTH_SHORT);
-       // txtWord.setText(guess_char);
-        }
-
-        if (id == R.id.btnLetter){
-            guessText = edtLetter.getText().toString();
-            if (mystery_word.contains(guessText))
-            Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
-            else {
-                Toast.makeText(this, "nokey", Toast.LENGTH_SHORT).show();
+                            init();
+                            edtLetter.setText("");
+                            Counter = 0;
+                            imgView();
+                        }
+                    });
+                    snk.show();
+                }
             }
         }
     }
