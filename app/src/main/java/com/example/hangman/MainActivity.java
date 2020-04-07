@@ -6,9 +6,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.solver.Cache;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
     String guessText;
     String guess_char;
     char xxx;
+
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+
+    private static final String TAG = "MainActivity";
+
 
 
     int ids[] = {
@@ -65,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         words = getResources().getStringArray(R.array.words);
 
 
+
         Length = ids.length;
 
 
@@ -80,9 +92,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-
-
-
                         init();
 
 
@@ -92,11 +101,19 @@ public class MainActivity extends AppCompatActivity {
                         edtLetter.setText("");
 
 
+
                     }
                 });
                 make.show();
             }
         });
+
+
+    }
+
+    private void nightSet() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+        recreate();
     }
 
     private void init() {
@@ -151,6 +168,9 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            addFragment();
+            //nightSet();
             return true;
         }
 
@@ -295,10 +315,22 @@ public class MainActivity extends AppCompatActivity {
         gallows.setImageResource(ids[Counter]);
     }
 
-    public void checkLetter(View view) {
+    private void addFragment() {
+        Log.i(TAG, "mohsen");
+
+        HelpFragment fragment = new HelpFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction().replace(R.id.container,fragment).addToBackStack(null).commit();
+
+
+
 
 
     }
+
+    //.addToBackStack(null)
+
     // char[] xxx = mystery_word.toCharArray();
     //for (int i = 1; i < xxx.length - 1; i++) {
     //  xxx[i] = '_';
