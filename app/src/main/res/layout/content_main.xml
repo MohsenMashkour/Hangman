@@ -7,7 +7,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main"
-    android:id="@+id/container">
+    android:id="@+id/container"
+    android:background="@color/bc">
 
     <ImageView
         android:id="@+id/imageView"
@@ -28,6 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:text="@string/txtWord"
+        android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -48,30 +51,32 @@
 
     <Button
         android:id="@+id/btnLetter"
-        android:layout_width="wrap_content"
+        android:layout_width="105dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginTop="45dp"
+        android:background="@color/colorAccent"
+        android:onClick="checkWord"
+        android:stateListAnimator="@null"
         android:text="@string/check_letter"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtLetter"
-        android:onClick="checkWord"
-        android:stateListAnimator="@null"/>
+        app:layout_constraintTop_toBottomOf="@+id/edtLetter" />
 
     <Button
         android:id="@+id/btnWord"
-        android:layout_width="wrap_content"
+        android:layout_width="105dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
+        android:background="@color/colorAccent"
+        android:onClick="checkWord"
+        android:stateListAnimator="@null"
+        android:text="@string/check_word"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toEndOf="@+id/btnLetter"
-        app:layout_constraintTop_toBottomOf="@+id/edtLetter"
-        android:text="@string/check_word"
-        android:textAlignment="center"
-        android:onClick="checkWord"
-        android:stateListAnimator="@null"/>
+        app:layout_constraintTop_toBottomOf="@+id/edtLetter" />
 
 
 

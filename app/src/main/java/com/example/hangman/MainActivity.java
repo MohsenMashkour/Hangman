@@ -1,5 +1,7 @@
 package com.example.hangman;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     EditText edtLetter;
     String guessText;
     String guess_char;
-    char xxx;
+    char xxx, xxx2;
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -61,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
     int Length;
 
 
-
+    MediaPlayer jigh, goodJob;
+    Button button;
 
 
     @Override
@@ -71,10 +74,13 @@ public class MainActivity extends AppCompatActivity {
 
         edtLetter = findViewById(R.id.edtLetter);
         txtWord = findViewById(R.id.txtWord);
+        button = findViewById(R.id.btnWord);
 
         // read the string-array into words array
         words = getResources().getStringArray(R.array.words);
 
+       jigh =  MediaPlayer.create(MainActivity.this, R.raw.jigh);
+       goodJob = MediaPlayer.create(MainActivity.this, R.raw.goodjob);
 
 
         Length = ids.length;
@@ -167,11 +173,15 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.help) {
 
             addFragment();
             //nightSet();
             return true;
+        }else if (id == R.id.action_settings){
+            Intent intent = new Intent(MainActivity.this,SettingActivity.class);
+            startActivity(intent);
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -219,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     imgView();
                     Snackbar snak = Snackbar.make(view, "Take care your answer was wrong!!!!!", Snackbar.LENGTH_SHORT);
                     snak.show();
+                    jigh.start();
 
                 }
             } finally {
@@ -251,7 +262,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.btnLetter) {
+            //putting the written letter into string guess_char
             guess_char = edtLetter.getText().toString();
+
+            //putting stars into guessText
             guessText = txtWord.getText().toString();
 
             try {
@@ -263,18 +277,31 @@ public class MainActivity extends AppCompatActivity {
                 //snackbar.setAction()
 
 
+                //checking if the written letter is one of the letters of the mystery_word
             }else if (mystery_word.contains(guess_char)) {
                     // int indx;
 
-                    int indx = mystery_word.indexOf(guess_char);
-                    xxx = guess_char.charAt(0);
-                    StringBuilder tmp = new StringBuilder(guessText);
+                    int indx = mystery_word.indexOf(guess_char);    //the number of the character in the word
 
-                    tmp.setCharAt(indx, xxx);
+                    xxx = guess_char.charAt(0);    // putting the founded character in char xxx
+
+                StringBuilder tmp = new StringBuilder(guessText);
+
+                    tmp.setCharAt(indx, xxx);     // character xxx into indx position of the mystery word instead of stars
+                //  به جای ستاره مثلا حرف الف در جایگاه شماره دوم از کلمه مجهول
+
                     txtWord.setText(tmp);
+
+                    String khali = "";
+
+                   // mystery_word = String.valueOf(khali.charAt(indx));
+
+                    //button.setText(mystery_word);
+
                     edtLetter.setText("");
                     Snackbar snak = Snackbar.make(view, "Great guess. Go ahead!!!!!", Snackbar.LENGTH_SHORT);
                     snak.show();
+                    goodJob.start();
 
 
                     // Toast.makeText(this, tmp, Toast.LENGTH_SHORT).show();
@@ -285,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
                     edtLetter.setText("");
                     Counter++;
                     imgView();
+                    jigh.start();
                 }
             } finally {
                 if (Counter == 11) {

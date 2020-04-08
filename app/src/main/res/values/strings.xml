@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Hangman</string>
-    <string name="action_settings">Help</string>
-    <string name="check_word">CHECK WORD</string>
-    <string name="check_letter">CHECK LETTER</string>
+    <string name="help">Help</string>
+    <string name="action_settings">Setting</string>
+    <string name="check_word"> CHECK WORD </string>
+    <string name="check_letter"> CHECK LETTER </string>
     <string name="letter">Letter</string>
     <string name="txtWord">!!HANGMAN!!</string>
 
